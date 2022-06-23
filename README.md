@@ -1,0 +1,2 @@
+# FrigoOS
+ It's my OPERATING SYSTEM
