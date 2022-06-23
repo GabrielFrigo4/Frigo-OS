@@ -12,13 +12,7 @@ mov al, 03h
 mov ah, 0
 int 10h
 
-mov ah, 09h
-mov cx, 1000h
-mov al, 20h
-
-mov bl, 30h
-int 10h
-
+call setcolor
 mov si, os_data ;write FrigoOS data
 call writeln
 
@@ -34,9 +28,14 @@ mainloop:
     je mainloop
 
     mov si, buffer
+    mov di, get_clear
+    call strcmp
+    je .clear
+
+    mov si, buffer
     mov di, get_os_data
     call strcmp
-    je .hi
+    je .os_data
 
     mov si, buffer
     mov di, get_restart
@@ -48,9 +47,21 @@ mainloop:
     call strcmp
     je .shutdown
 
+    mov si, buffer
+    call writeln
+
     jmp mainloop
 
-.hi:
+.clear:
+    call clear
+    call setcolor
+
+    mov si, os_data ;write FrigoOS data
+    call writeln
+
+    jmp mainloop
+
+.os_data:
     mov si, os_data
     call writeln
 
@@ -85,6 +96,22 @@ strcmp:
     stc 
     ret
 
+
+setcolor:
+    mov ah, 09h
+    mov cx, 1000h
+    mov al, 20h
+
+    mov bl, 30h
+    int 10h
+    ret
+
+
+clear:
+    mov al, 03h
+    mov ah, 0
+    int 10h
+    ret
 
 read:
     xor cl, cl
@@ -139,7 +166,6 @@ read:
     int 0x10
     mov al, 0x0A
     int 0x10
-
     ret
 
 
@@ -182,6 +208,7 @@ shutdown:
 buffer times 64 db 0
 prompt db '>', 0
 os_data db "FrigoOS v0.1", 0
+get_clear db "clear", 0
 get_os_data db "dataos", 0
 get_shutdown db "shutdown", 0
 get_restart db "restart", 0
