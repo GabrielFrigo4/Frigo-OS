@@ -113,6 +113,9 @@ read:
     cmp cl, 0
     je .loop
 
+    mov ah, 0x0E
+    int 0x10
+
     dec di
     mov byte[di], 0
     dec cl

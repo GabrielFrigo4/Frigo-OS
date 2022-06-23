@@ -16,9 +16,9 @@ then
 	mkdosfs -C BinOS/FrigoOS.flp 1440 
 fi
 
-nasm -O0 -w+orphan-labels -f bin -o  BinOS/bootloader.bin Bootloader.asm
+nasm -O0 -w+orphan-labels -f bin -o  BinOS/bootloader.bin src/Bootloader.asm
 
-nasm -O0 -w+orphan-labels -f bin -o BinOS/kernel.bin Kernel.asm 
+nasm -O0 -w+orphan-labels -f bin -o BinOS/kernel.bin src/Kernel.asm 
 
 dd status=noxfer conv=notrunc if=BinOS/bootloader.bin of=BinOS/FrigoOS.flp
 
