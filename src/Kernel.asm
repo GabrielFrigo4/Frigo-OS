@@ -19,7 +19,7 @@ mov al, 20h
 mov bl, 30h
 int 10h
 
-mov si, os_data
+mov si, os_data ;write FrigoOS data
 call writeln
 
 mainloop:
@@ -102,7 +102,7 @@ read:
     cmp cl, 0x3F
     je .loop
 
-    mov ah, 0x0E
+    mov ah, 0x0E ;show add char
     int 0x10
 
     stosb
@@ -113,7 +113,7 @@ read:
     cmp cl, 0
     je .loop
 
-    mov ah, 0x0E
+    mov ah, 0x0E ;show remove char
     int 0x10
 
     dec di
