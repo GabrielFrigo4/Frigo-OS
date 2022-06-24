@@ -2,13 +2,15 @@ BITS 16
 [org 0]
 
 	section .data
-buffer:          times 64 db 0
-prompt:          db "FrigoOS->", 0
-os_data:         db "FrigoOS v0.1", 0
-get_clear:       db "clear", 0
-get_os_data:     db "dataos", 0
-get_shutdown:    db "shutdown", 0
-get_restart:     db "restart", 0
+buffer:         times 64 db 0
+buffers:        times 10 dw 0
+buffers_int:    dw 0
+prompt:         db "FrigoOS:>", 0
+os_data:        db "FrigoOS v0.1.2", 0
+get_clear:      db "clear", 0
+get_os_data:    db "dataos", 0
+get_exit:       db "exit", 0
+get_restart:    db "restart", 0
 
 	section .text
 mov ax, cs
@@ -27,12 +29,14 @@ mov si, os_data ;write FrigoOS data
 call writeln
 
 mainloop:
+    call setcolor
     mov si, prompt
     call write
 
     mov di, buffer 
     call read
 
+    call setcolor
     mov si, buffer
     cmp byte[si], 0
     je mainloop
@@ -53,9 +57,9 @@ mainloop:
     je .restart
 
     mov si, buffer
-    mov di, get_shutdown
+    mov di, get_exit
     call strcmp
-    je .shutdown
+    je .exit
 
     mov si, buffer
     call writeln
@@ -65,9 +69,6 @@ mainloop:
 .clear:
     call clear
     call setcolor
-
-    mov si, os_data ;write FrigoOS data
-    call writeln
 
     jmp mainloop
 
@@ -80,7 +81,7 @@ mainloop:
 .restart:
     ret
 
-.shutdown:
+.exit:
     call shutdown
     ret
 
@@ -113,7 +114,11 @@ setcolor:
     mov cx, 1000h
     mov al, 20h
 
-    mov bl, 30h
+    ;mov bl, 87h
+    ;mov bl, 70h
+    ;mov bl, 07h
+    ;mov bl, 19h
+    mov bl, 13h
     int 10h
     ret
 
