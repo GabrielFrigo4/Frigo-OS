@@ -1,23 +1,21 @@
-BITS 16
+BITS 16				          
 
-        
+	section .text
 	jmp short bootloader_start	
-	nop				          
-
-
-
-
+	nop
+	
+	
 OEMLabel		db "BESTSOFT"
 BytesPerSector		dw 512		
 SectorsPerCluster	db 1		
-ReservedForBoot		dw 1		
+ReservedForBoot	dw 1		
 NumberOfFats		db 2		
 RootDirEntries		dw 224		
 					
 LogicalSectors		dw 2880		
 MediumByte		db 0F0h		
 SectorsPerFat		dw 9		
-SectorsPerTrack		dw 18		
+SectorsPerTrack	dw 18		
 Sides			dw 2		
 HiddenSectors		dd 0		
 LargeSectors		dd 0		
@@ -28,8 +26,7 @@ VolumeLabel		db "           "
 FileSystem		db "FAT12   "	
 
 
-
-
+	section .text
 bootloader_start:
 	mov ax, 07C0h			; Set up 4K of stack space above buffer
 	add ax, 544			; 8k buffer = 512 paragraphs + 32 paragraphs (loader)
@@ -314,10 +311,4 @@ l2hts:
 	dw 0AA55h		
 
 
-buffer:				
-
-
-
-
-
- 
+buffer:

@@ -1,6 +1,16 @@
 BITS 16
 [org 0]
 
+	section .data
+buffer times 64 db 0
+prompt db '>', 0
+os_data db "FrigoOS v0.1", 0
+get_clear db "clear", 0
+get_os_data db "dataos", 0
+get_shutdown db "shutdown", 0
+get_restart db "restart", 0
+
+	section .text
 mov ax, cs
 mov ds, ax
 mov es, ax
@@ -203,12 +213,3 @@ shutdown:
     mov cx, 0x0003
     int 0x15
     ret
-
-
-buffer times 64 db 0
-prompt db '>', 0
-os_data db "FrigoOS v0.1", 0
-get_clear db "clear", 0
-get_os_data db "dataos", 0
-get_shutdown db "shutdown", 0
-get_restart db "restart", 0
