@@ -3,8 +3,6 @@ BITS 16
 
 	section .data
 buffer:         times 64 db 0
-buffers:        times 10 dw 0
-buffers_int:    dw 0
 prompt:         db "FrigoOS:>", 0
 os_data:        db "FrigoOS v0.1.2", 0
 get_clear:      db "clear", 0
@@ -38,7 +36,7 @@ mainloop:
 
     call setcolor
     mov si, buffer
-    cmp byte[si], 0
+    cmp byte [si], 0
     je mainloop
 
     mov si, buffer
