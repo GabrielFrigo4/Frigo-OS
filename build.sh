@@ -34,6 +34,6 @@ umount BinOS/tmp-loop
 rm -rf BinOS/tmp-loop
 
 rm -f BinOS/FrigoOS.iso
-mkisofs -quiet -V 'BESTOS' -input-charset iso8859-1 -o BinOS/FrigoOS.iso -b BinOS/FrigoOS.flp ./BinOS/
+mkisofs -quiet -V 'BESTOS' -input-charset iso8859-1 -o BinOS/FrigoOS.iso -b BinOS/FrigoOS.flp
 
 echo '>>> Done!'
