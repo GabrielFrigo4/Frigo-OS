@@ -34,7 +34,7 @@ umount BinOS/tmp-loop
 rm -rf BinOS/tmp-loop
 
 rm -f BinOS/FrigoOS.iso
-mkisofs -quiet -V 'BESTOS' -input-charset iso8859-1 -o BinOS/FrigoOS.iso -b BinOS/FrigoOS.flp
+mkisofs -quiet -V 'BESTOS' -input-charset iso8859-1 -o BinOS/FrigoOS.iso -b BinOS/FrigoOS.flp ./
 
 qemu-system-i386 -fda BinOS/FrigoOS.flp
 
