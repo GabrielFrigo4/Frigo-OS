@@ -1,14 +1,14 @@
 #!/bin/sh
 
+if [ ! -e BinOS ]
+then
+	mkdir BinOS
+fi
+
 if test "`whoami`" != "root" ; then
 	echo "You must be logged in as root to build (for loopback mounting)"
 	echo "Enter 'su' or 'sudo bash' to switch to root"
 	exit
-fi
-
-if [ ! -e BinOS ]
-then
-	mkdir BinOS
 fi
 
 if [ ! -e BinOS/FrigoOS.flp ]
@@ -18,24 +18,25 @@ fi
 
 nasm -O0 -w+orphan-labels -f bin -o  BinOS/bootloader.bin src/Bootloader.asm || exit
 
-nasm -O0 -w+orphan-labels -f bin -o BinOS/kernel.bin src/Kernel.asm || exit
+nasm -O0 -w+orphan-labels -f bin -o BinOS/kernel.bin src/Kernel.asm  || exit
 
-dd status=noxfer conv=notrunc if=BinOS/bootloader.bin of=BinOS/FrigoOS.flp
+dd status=noxfer conv=notrunc if=BinOS/bootloader.bin of=BinOS/FrigoOS.flp || exit
 
+cd BinOS
 
-rm -rf BinOS/tmp-loop
+rm -rf tmp-loop
 
-mkdir BinOS/tmp-loop && mount -o loop -t vfat BinOS/FrigoOS.flp BinOS/tmp-loop && cp BinOS/kernel.bin BinOS/tmp-loop/
+mkdir tmp-loop && mount -o loop -t vfat FrigoOS.flp tmp-loop && cp kernel.bin tmp-loop/
 
 sleep 0.2
 
-umount BinOS/tmp-loop 
+umount tmp-loop || exit
 
-rm -rf BinOS/tmp-loop
+rm -rf tmp-loop
 
-rm -f BinOS/FrigoOS.iso
-mkisofs -quiet -V 'BESTOS' -input-charset iso8859-1 -o BinOS/FrigoOS.iso -b BinOS/FrigoOS.flp ./
+rm -f FrigoOS.iso
+mkisofs -quiet -V 'FRIGOOS' -input-charset iso8859-1 -o FrigoOS.iso -b FrigoOS.flp ./ || exit
 
-qemu-system-i386 -fda BinOS/FrigoOS.flp
+qemu-system-i386 -fda FrigoOS.flp
 
 echo '>>> Done!'
