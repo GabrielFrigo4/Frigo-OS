@@ -3,12 +3,18 @@ BITS 16
 
 	section .data
 buffer:         times 64 db 0
+color_sys:      db 13h
 prompt:         db "FrigoOS:>", 0
 os_data:        db "FrigoOS v0.1.2", 0
 get_clear:      db "clear", 0
 get_os_data:    db "dataos", 0
 get_exit:       db "exit", 0
 get_restart:    db "restart", 0
+get_color1:     db "color1", 0
+get_color2:     db "color2", 0
+get_color3:     db "color3", 0
+get_color4:     db "color4", 0
+get_color5:     db "color5", 0
 
 	section .text
 mov ax, cs
@@ -60,7 +66,34 @@ mainloop:
     je .exit
 
     mov si, buffer
+    mov di, get_color1
+    call strcmp
+    je .color1
+
+    mov si, buffer
+    mov di, get_color2
+    call strcmp
+    je .color2
+
+    mov si, buffer
+    mov di, get_color3
+    call strcmp
+    je .color3
+
+    mov si, buffer
+    mov di, get_color4
+    call strcmp
+    je .color4
+
+    mov si, buffer
+    mov di, get_color5
+    call strcmp
+    je .color5
+
+    mov si, buffer
     call writeln
+
+
 
     jmp mainloop
 
@@ -82,6 +115,37 @@ mainloop:
 .exit:
     call shutdown
     ret
+
+.color1:
+    mov si, color_sys
+    mov byte [si], 13h
+
+    jmp mainloop
+
+.color2:
+    mov si, color_sys
+    mov byte [si], 31h
+
+    jmp mainloop
+
+.color3:
+    mov si, color_sys
+    mov byte [si], 07h
+
+    jmp mainloop
+
+.color4:
+    mov si, color_sys
+    mov byte [si], 70h
+
+    jmp mainloop
+
+.color5:
+    mov si, color_sys
+    mov byte [si], 87h
+
+    jmp mainloop
+
 
 
 strcmp:
@@ -112,11 +176,7 @@ setcolor:
     mov cx, 1000h
     mov al, 20h
 
-    ;mov bl, 87h
-    ;mov bl, 70h
-    ;mov bl, 07h
-    ;mov bl, 19h
-    mov bl, 13h
+    mov bl, [color_sys]
     int 10h
     ret
 
