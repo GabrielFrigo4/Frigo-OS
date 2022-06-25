@@ -3,9 +3,10 @@ BITS 16
 
 	section .data
 buffer:         times 64 db 0
-color_sys:      db 13h
+color_sys:      db 07h
 prompt:         db "FrigoOS:>", 0
-os_data:        db "FrigoOS v0.1.2", 0
+erro_comand:    db "Command not found: ", 0
+os_data:        db "FrigoOS v0.1.3", 0
 get_clear:      db "clear", 0
 get_os_data:    db "dataos", 0
 get_exit:       db "exit", 0
@@ -15,6 +16,11 @@ get_color2:     db "color2", 0
 get_color3:     db "color3", 0
 get_color4:     db "color4", 0
 get_color5:     db "color5", 0
+get_color6:     db "color6", 0
+get_color7:     db "color7", 0
+get_color8:     db "color8", 0
+get_color9:     db "color9", 0
+
 
 	section .text
 mov ax, cs
@@ -91,9 +97,29 @@ mainloop:
     je .color5
 
     mov si, buffer
+    mov di, get_color6
+    call strcmp
+    je .color6
+
+    mov si, buffer
+    mov di, get_color7
+    call strcmp
+    je .color7
+
+    mov si, buffer
+    mov di, get_color8
+    call strcmp
+    je .color8
+
+    mov si, buffer
+    mov di, get_color9
+    call strcmp
+    je .color9
+
+    mov si, erro_comand
+    call write
+    mov si, buffer
     call writeln
-
-
 
     jmp mainloop
 
@@ -118,31 +144,55 @@ mainloop:
 
 .color1:
     mov si, color_sys
-    mov byte [si], 13h
+    mov byte [si], 07h
 
     jmp mainloop
 
 .color2:
     mov si, color_sys
-    mov byte [si], 31h
+    mov byte [si], 70h
 
     jmp mainloop
 
 .color3:
     mov si, color_sys
-    mov byte [si], 07h
+    mov byte [si], 87h
 
     jmp mainloop
 
 .color4:
     mov si, color_sys
-    mov byte [si], 70h
+    mov byte [si], 78h
 
     jmp mainloop
 
 .color5:
     mov si, color_sys
-    mov byte [si], 87h
+    mov byte [si], 13h
+
+    jmp mainloop
+
+.color6:
+    mov si, color_sys
+    mov byte [si], 31h
+
+    jmp mainloop
+
+.color7:
+    mov si, color_sys
+    mov byte [si], 24h
+
+    jmp mainloop
+
+.color8:
+    mov si, color_sys
+    mov byte [si], 34h
+
+    jmp mainloop
+
+.color9:
+    mov si, color_sys
+    mov byte [si], 94h
 
     jmp mainloop
 
@@ -178,6 +228,10 @@ setcolor:
 
     mov bl, [color_sys]
     int 10h
+    ret
+
+
+setallcolor:
     ret
 
 
