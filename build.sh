@@ -13,12 +13,12 @@ fi
 
 if [ ! -e BinOS/FrigoOS.flp ]
 then
-	mkdosfs -C BinOS/FrigoOS.flp 1440 
+	mkdosfs -C BinOS/FrigoOS.flp 1440 || exit
 fi
 
-nasm -O0 -w+orphan-labels -f bin -o  BinOS/bootloader.bin src/Bootloader.asm
+nasm -O0 -w+orphan-labels -f bin -o  BinOS/bootloader.bin src/Bootloader.asm || exit
 
-nasm -O0 -w+orphan-labels -f bin -o BinOS/kernel.bin src/Kernel.asm 
+nasm -O0 -w+orphan-labels -f bin -o BinOS/kernel.bin src/Kernel.asm  || exit
 
 dd status=noxfer conv=notrunc if=BinOS/bootloader.bin of=BinOS/FrigoOS.flp
 
@@ -34,6 +34,6 @@ umount BinOS/tmp-loop
 rm -rf BinOS/tmp-loop
 
 rm -f BinOS/FrigoOS.iso
-mkisofs -quiet -V 'BESTOS' -input-charset iso8859-1 -o BinOS/FrigoOS.iso -b BinOS/FrigoOS.flp ./ 
+mkisofs -quiet -V 'BESTOS' -input-charset iso8859-1 -o BinOS/FrigoOS.iso -b BinOS/FrigoOS.flp ./BinOS/
 
 echo '>>> Done!'
