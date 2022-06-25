@@ -2,7 +2,7 @@
 
 if [ ! -e BinOS ]
 then
-	#mkdir BinOS
+	mkdir BinOS
 fi
 
 if test "`whoami`" != "root" ; then
