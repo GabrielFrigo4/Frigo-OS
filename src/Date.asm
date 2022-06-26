@@ -4,6 +4,7 @@ fmt_date:		db 0, '/'
 
 
 	section .text
+; return int in ax
 bcd_to_int:
 	pusha
 	mov bl, al	; Store entire number for now
@@ -20,6 +21,7 @@ bcd_to_int:
 	.tmp	dw 0
 	
 
+; return string in bx
 get_date_string:
 	pusha
 
@@ -148,7 +150,6 @@ get_date_string:
 	popa
 	ret
 
-
 .add_1or2digits:
 	test ah, 0F0h
 	jz .only_one
@@ -198,6 +199,7 @@ get_date_string:
 .months db 'Jan.Feb.Mar.Apr.May JuneJulyAug.SeptOct.Nov.Dec.'
 
 
+; return string in bx
 get_time_string:
 	pusha
 

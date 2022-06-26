@@ -1,7 +1,7 @@
 BITS 16
 [org 0]
 
-	section .data
+    section .data
 path:           times 64 db 0
 buffer:         times 64 db 0
 color_sys:      db 07h
@@ -25,7 +25,7 @@ get_date:	    db "date", 0
 get_time:	    db "time", 0
 
 
-	section .text
+    section .text
 mov ax, cs
 mov ds, ax
 mov es, ax
