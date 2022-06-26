@@ -5,7 +5,7 @@ BITS 16
 path:           times 64 db 0
 buffer:         times 64 db 0
 color_sys:      db 07h
-cmd:		db ":>", 0
+cmd:            db ":>", 0
 erro_comand:    db "Command not found: ", 0
 os_data:        db "FrigoOS v0.1.4", 0
 get_clear:      db "clear", 0
@@ -21,6 +21,8 @@ get_color8:     db "color8", 0
 get_color9:     db "color9", 0
 get_exit:       db "exit", 0
 get_restart:    db "restart", 0
+get_date:	    db "date", 0
+get_time:	    db "time", 0
 
 
 	section .text
@@ -116,6 +118,16 @@ main:
     mov di, get_restart
     call strcmp
     je .restart
+    
+    mov si, buffer
+    mov di, get_date
+    call strcmp
+    je .date
+
+    mov si, buffer
+    mov di, get_time
+    call strcmp
+    je .time
 
     mov si, erro_comand
     call write
@@ -197,6 +209,18 @@ main:
 .restart:
     call restart
     ret
+    
+.date:
+	call get_date_string 
+ 	mov si, bx 
+    call writeln
+    jmp main
+
+.time:
+	call get_time_string 
+ 	mov si, bx 
+    call writeln
+    jmp main
 
 
 strcmp:
@@ -365,8 +389,7 @@ shutdown:
 ; ------------------------------------------------------------------
 ; FEATURES -- Code to pull into the kernel
 
-
- 	;%INCLUDE "src/"
+ 	%INCLUDE "src/Date.asm"
 
 ; ==================================================================
 ; END OF KERNEL
