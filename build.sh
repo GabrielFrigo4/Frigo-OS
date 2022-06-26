@@ -20,7 +20,8 @@ cd BinOS
 
 rm -rf tmp-loop
 
-mkdir tmp-loop && sudo mount -o loop -t vfat FrigoOS.flp tmp-loop && sudo cp kernel.bin tmp-loop/
+mkdir tmp-loop && sudo mount -o loop -t vfat FrigoOS.flp tmp-loop 
+sudo cp kernel.bin tmp-loop/
 
 sleep 0.2
 

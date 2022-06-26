@@ -5,7 +5,7 @@ BITS 16
 path:           times 64 db 0
 buffer:         times 64 db 0
 color_sys:      db 07h
-prompt:         db ":>", 0
+cmd:		db ":>", 0
 erro_comand:    db "Command not found: ", 0
 os_data:        db "FrigoOS v0.1.4", 0
 get_clear:      db "clear", 0
@@ -37,11 +37,11 @@ call setcolor
 mov si, os_data ;write FrigoOS data
 call writeln
 
-mainloop:
+main:
     call setcolor
     mov si, path
     call write
-    mov si, prompt
+    mov si, cmd
     call write
 
     mov di, buffer 
@@ -50,7 +50,7 @@ mainloop:
     call setcolor
     mov si, buffer
     cmp byte [si], 0
-    je mainloop
+    je main
 
     mov si, buffer
     mov di, get_clear
@@ -122,73 +122,73 @@ mainloop:
     mov si, buffer
     call writeln
 
-    jmp mainloop
+    jmp main
 
 .clear:
     call clear
     call setcolor
 
-    jmp mainloop
+    jmp main
 
 .os_data:
     mov si, os_data
     call writeln
 
-    jmp mainloop
+    jmp main
 
 .color1:
     mov si, color_sys
     mov byte [si], 07h
 
-    jmp mainloop
+    jmp main
 
 .color2:
     mov si, color_sys
     mov byte [si], 70h
 
-    jmp mainloop
+    jmp main
 
 .color3:
     mov si, color_sys
     mov byte [si], 87h
 
-    jmp mainloop
+    jmp main
 
 .color4:
     mov si, color_sys
     mov byte [si], 78h
 
-    jmp mainloop
+    jmp main
 
 .color5:
     mov si, color_sys
     mov byte [si], 13h
 
-    jmp mainloop
+    jmp main
 
 .color6:
     mov si, color_sys
     mov byte [si], 31h
 
-    jmp mainloop
+    jmp main
 
 .color7:
     mov si, color_sys
     mov byte [si], 24h
 
-    jmp mainloop
+    jmp main
 
 .color8:
     mov si, color_sys
     mov byte [si], 34h
 
-    jmp mainloop
+    jmp main
 
 .color9:
     mov si, color_sys
     mov byte [si], 94h
 
-    jmp mainloop
+    jmp main
 
 .exit:
     call shutdown
@@ -361,3 +361,13 @@ shutdown:
     cli
     hlt
     ret
+    
+; ------------------------------------------------------------------
+; FEATURES -- Code to pull into the kernel
+
+
+ 	;%INCLUDE "src/"
+
+; ==================================================================
+; END OF KERNEL
+; ==================================================================
