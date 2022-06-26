@@ -2,15 +2,14 @@ BITS 16
 [org 0]
 
 	section .data
+path:           times 64 db 0
 buffer:         times 64 db 0
 color_sys:      db 07h
-prompt:         db "FrigoOS:>", 0
+prompt:         db ":>", 0
 erro_comand:    db "Command not found: ", 0
-os_data:        db "FrigoOS v0.1.3", 0
+os_data:        db "FrigoOS v0.1.4", 0
 get_clear:      db "clear", 0
 get_os_data:    db "dataos", 0
-get_exit:       db "exit", 0
-get_restart:    db "restart", 0
 get_color1:     db "color1", 0
 get_color2:     db "color2", 0
 get_color3:     db "color3", 0
@@ -20,6 +19,8 @@ get_color6:     db "color6", 0
 get_color7:     db "color7", 0
 get_color8:     db "color8", 0
 get_color9:     db "color9", 0
+get_exit:       db "exit", 0
+get_restart:    db "restart", 0
 
 
 	section .text
@@ -30,9 +31,7 @@ mov ax, 0x7000
 mov ss, ax
 mov sp, ss
 
-mov al, 03h
-mov ah, 0
-int 10h
+call clear
 
 call setcolor
 mov si, os_data ;write FrigoOS data
@@ -40,6 +39,8 @@ call writeln
 
 mainloop:
     call setcolor
+    mov si, path
+    call write
     mov si, prompt
     call write
 
@@ -60,16 +61,6 @@ mainloop:
     mov di, get_os_data
     call strcmp
     je .os_data
-
-    mov si, buffer
-    mov di, get_restart
-    call strcmp
-    je .restart
-
-    mov si, buffer
-    mov di, get_exit
-    call strcmp
-    je .exit
 
     mov si, buffer
     mov di, get_color1
@@ -116,6 +107,16 @@ mainloop:
     call strcmp
     je .color9
 
+    mov si, buffer
+    mov di, get_exit
+    call strcmp
+    je .exit
+
+    mov si, buffer
+    mov di, get_restart
+    call strcmp
+    je .restart
+
     mov si, erro_comand
     call write
     mov si, buffer
@@ -134,13 +135,6 @@ mainloop:
     call writeln
 
     jmp mainloop
-
-.restart:
-    ret
-
-.exit:
-    call shutdown
-    ret
 
 .color1:
     mov si, color_sys
@@ -196,6 +190,13 @@ mainloop:
 
     jmp mainloop
 
+.exit:
+    call shutdown
+    ret
+
+.restart:
+    call restart
+    ret
 
 
 strcmp:
@@ -240,6 +241,7 @@ clear:
     mov ah, 0
     int 10h
     ret
+
 
 read:
     xor cl, cl
@@ -310,6 +312,7 @@ write:
 .done:
     ret
 
+
 writeln:
     call write
     
@@ -320,6 +323,33 @@ writeln:
     int 0x10
     ret
 
+
+restart:
+    mov byte [color_sys], 07h
+
+    mov si, path
+    mov di, buffer
+
+    push ax
+    xor ax, ax
+
+.loop:
+    mov byte [si], 0
+    mov byte [di], 0
+
+    cmp al, 63
+    jge .done
+
+    inc di
+    inc si
+    inc ax
+    jmp .loop
+
+.done:
+    pop ax
+    ret
+
+
 shutdown:
     mov ax, 0x1000
     mov ax, ss
@@ -328,4 +358,6 @@ shutdown:
     mov bx, 0x0001
     mov cx, 0x0003
     int 0x15
+    cli
+    hlt
     ret
