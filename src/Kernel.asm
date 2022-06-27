@@ -2,14 +2,14 @@ BITS 16
 [org 0]
 
     section .data
-path:           times 64 db 0
 buffer:         times 64 db 0
 color_sys:      db 07h
 cmd:            db ":>", 0
 erro_comand:    db "Command not found: ", 0
-os_data:        db "FrigoOS v0.2.0", 0
+os_data:        db "FrigoOS v0.2.1", 0
 get_clear:      db "clear", 0
 get_os_data:    db "dataos", 0
+get_color:     db "color", 0
 get_color1:     db "color1", 0
 get_color2:     db "color2", 0
 get_color3:     db "color3", 0
@@ -41,8 +41,6 @@ call writeln
 
 main:
     call setcolor
-    mov si, path
-    call write
     mov si, cmd
     call write
 
@@ -63,6 +61,11 @@ main:
     mov di, get_os_data
     call strcmp
     je .os_data
+
+    mov si, buffer
+    mov di, get_color
+    call strcmp
+    je .color
 
     mov si, buffer
     mov di, get_color1
@@ -145,6 +148,26 @@ main:
 .os_data:
     mov si, os_data
     call writeln
+
+    jmp main
+
+.color:
+    mov di, buffer 
+    call read
+    mov si, color_sys
+
+    xor ax, ax
+    mov al, byte [buffer + 1]
+    sub al, '0'
+    mov byte [si], al
+
+    xor ax, ax
+    xor cx, cx
+    mov al, byte [buffer]
+    sub al, '0'
+    mov cl, 16
+    mul cx
+    add byte [si], al
 
     jmp main
 
@@ -350,16 +373,13 @@ writeln:
 
 restart:
     mov byte [color_sys], 07h
-
-    mov si, path
-    mov di, buffer
+    mov si, buffer
 
     push ax
     xor ax, ax
 
 .loop:
     mov byte [si], 0
-    mov byte [di], 0
 
     cmp al, 63
     jge .done
