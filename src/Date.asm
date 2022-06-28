@@ -219,12 +219,14 @@ get_time_string:
     int 1Ah
 
 .read:
+    ;mov ch, 10
     mov al, ch            ; Convert hours to integer for AM/PM test
     call bcd_to_int
     mov dx, ax            ; Save
 
-    add dl, byte [timezone]
-    add ch, byte [timezone]
+    ;mov dl, 11
+    ;add dl, byte [timezone]
+    ;add ch, byte [timezone]
 
     mov al,    ch            ; Hour
     shr al, 4            ; Tens digit - move higher BCD number into lower bits
