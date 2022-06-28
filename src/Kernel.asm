@@ -10,6 +10,7 @@ os_data:        db "FrigoOS v0.2.1", 0
 get_clear:      db "clear", 0
 get_os_data:    db "dataos", 0
 get_color:     db "color", 0
+color_arg:      db "color value: ", 0
 get_color1:     db "color1", 0
 get_color2:     db "color2", 0
 get_color3:     db "color3", 0
@@ -21,8 +22,8 @@ get_color8:     db "color8", 0
 get_color9:     db "color9", 0
 get_exit:       db "exit", 0
 get_restart:    db "restart", 0
-get_date:	    db "date", 0
-get_time:	    db "time", 0
+get_date:        db "date", 0
+get_time:        db "time", 0
 
 
     section .text
@@ -152,6 +153,9 @@ main:
     jmp main
 
 .color:
+    mov si, color_arg
+    call write
+
     mov di, buffer 
     call read
     mov si, color_sys
@@ -234,14 +238,14 @@ main:
     ret
     
 .date:
-	call get_date_string 
- 	mov si, bx 
+    call get_date_string 
+    mov si, bx 
     call writeln
     jmp main
 
 .time:
-	call get_time_string 
- 	mov si, bx 
+    call get_time_string 
+    mov si, bx 
     call writeln
     jmp main
 
@@ -409,7 +413,7 @@ shutdown:
 ; ------------------------------------------------------------------
 ; FEATURES -- Code to pull into the kernel
 
- 	%INCLUDE "src/Date.asm"
+     %INCLUDE "src/Date.asm"
 
 ; ==================================================================
 ; END OF KERNEL
