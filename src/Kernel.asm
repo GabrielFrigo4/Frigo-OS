@@ -137,19 +137,16 @@ main:
     call write
     mov si, buffer
     call writeln
-
     jmp main
 
 .clear:
     call clear
     call setcolor
-
     jmp main
 
 .os_data:
     mov si, os_data
     call writeln
-
     jmp main
 
 .color:
@@ -159,61 +156,51 @@ main:
     mov di, buffer 
     call read
     call setcolorstr
-
     jmp main
 
 .color1:
     mov si, color_sys
     mov byte [si], 07h
-
     jmp main
 
 .color2:
     mov si, color_sys
     mov byte [si], 70h
-
     jmp main
 
 .color3:
     mov si, color_sys
     mov byte [si], 87h
-
     jmp main
 
 .color4:
     mov si, color_sys
     mov byte [si], 78h
-
     jmp main
 
 .color5:
     mov si, color_sys
     mov byte [si], 13h
-
     jmp main
 
 .color6:
     mov si, color_sys
     mov byte [si], 31h
-
     jmp main
 
 .color7:
     mov si, color_sys
     mov byte [si], 24h
-
     jmp main
 
 .color8:
     mov si, color_sys
     mov byte [si], 34h
-
     jmp main
 
 .color9:
     mov si, color_sys
     mov byte [si], 94h
-
     jmp main
 
 .exit:
@@ -238,6 +225,7 @@ main:
 
 
 ;args: si, di
+;ret: carry flag
 strcmp:
 .loop:
     mov al, [si]
@@ -262,143 +250,7 @@ strcmp:
 
 
 ;args: noone
-setcolor:
-    mov ah, 09h
-    mov cx, 1000h
-    mov al, 20h
-
-    mov bl, [color_sys]
-    int 10h
-    ret
-
-
-;args: di
-setcolorstr:
-    mov si, color_sys
-
-    mov al, byte [buffer + 1]
-    cmp al, 0
-    je .end
-    mov al, byte [buffer]
-    cmp al, 0
-    je .end
-
-    xor ax, ax
-    mov al, byte [buffer + 1]
-    cmp al, 0
-    sub al, '0'
-    mov byte [si], al
-
-    xor ax, ax
-    xor cx, cx
-    mov al, byte [buffer]
-    cmp al, 0
-    sub al, '0'
-    mov cl, 16
-    mul cx
-    add byte [si], al
-.end:
-    ret
-
-
-;args: noone
-setallcolor:
-    ret
-
-
-;args: noone
-clear:
-    mov al, 03h
-    mov ah, 0
-    int 10h
-    ret
-
-
-;args: di
-read:
-    xor cl, cl
-
-.loop:
-    mov ah, 0
-    int 0x16
-
-    cmp al, 0x08
-    je .backspace
-
-    cmp al, 0x0D
-    je .done
-
-    cmp cl, 0x3F
-    je .loop
-
-    mov ah, 0x0E ;show add char
-    int 0x10
-
-    stosb
-    inc cl
-    jmp .loop
-
-.backspace:
-    cmp cl, 0
-    je .loop
-
-    mov ah, 0x0E ;show remove char
-    int 0x10
-
-    dec di
-    mov byte[di], 0
-    dec cl
-
-    mov ah, 0x0E
-    mov al, 0x08
-
-    mov al, ''
-    int 10h
-
-    mov al, 0x08
-    int 10h
-
-    jmp .loop
-
-.done:
-    mov al, 0
-    stosb
-    mov ah, 0x0E
-    mov al, 0x0D
-    int 0x10
-    mov al, 0x0A
-    int 0x10
-    ret
-
-
-;args: si
-write:
-    lodsb
-
-    or al, al
-    jz .done
-
-    mov ah, 0x0E
-    int 0x10
-    jmp write
-
-.done:
-    ret
-
-
-;args: si
-writeln:
-    call write
-    
-    mov ah, 0x0E
-    mov al, 0x0D
-    int 0x10
-    mov al, 0x0A
-    int 0x10
-    ret
-
-
-;args: noone
+;ret: noone
 restart:
     mov byte [color_sys], 07h
     mov si, buffer
@@ -423,6 +275,7 @@ restart:
 
 
 ;args: noone
+;ret: noone
 shutdown:
     mov ax, 0x1000
     mov ax, ss
@@ -439,6 +292,7 @@ shutdown:
 ; FEATURES -- Code to pull into the kernel
 
      %INCLUDE "src/Date.asm"
+     %INCLUDE "src/Cli.asm"
 
 ; ==================================================================
 ; END OF KERNEL

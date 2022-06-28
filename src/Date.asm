@@ -1,10 +1,12 @@
     section .data
-fmt_12_24:        db 0
-fmt_date:        db 0, '/'
+timezone:       db -3
+fmt_12_24:      db 0
+fmt_date:       db 1, '/'
 
 
     section .text
-; return int in ax
+;args: al
+;ret: ax
 bcd_to_int:
     pusha
     mov bl, al    ; Store entire number for now
@@ -21,7 +23,8 @@ bcd_to_int:
     .tmp    dw 0
     
 
-; return string in bx
+;args: noone
+;ret: bx
 get_date_string:
     pusha
 
@@ -196,10 +199,11 @@ get_date_string:
     pop bx
     ret
 
-.months db 'Jan.Feb.Mar.Apr.May JuneJulyAug.SeptOct.Nov.Dec.'
+.months: db 'Jan.Feb.Mar.Apr.May JuneJulyAug.SeptOct.Nov.Dec.'
 
 
-; return string in bx
+;args: noone
+;ret: bx
 get_time_string:
     pusha
 
@@ -218,6 +222,9 @@ get_time_string:
     mov al, ch            ; Convert hours to integer for AM/PM test
     call bcd_to_int
     mov dx, ax            ; Save
+
+    add dl, byte [timezone]
+    add ch, byte [timezone]
 
     mov al,    ch            ; Hour
     shr al, 4            ; Tens digit - move higher BCD number into lower bits
