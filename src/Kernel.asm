@@ -6,7 +6,7 @@ buffer:         times 64 db 0
 color_sys:      db 07h
 cmd:            db ":>", 0
 erro_comand:    db "Command not found: ", 0
-os_data:        db "FrigoOS v0.2.1", 0
+os_data:        db "FrigoOS v0.2.2", 0
 get_clear:      db "clear", 0
 get_os_data:    db "dataos", 0
 get_color:     db "color", 0
@@ -158,20 +158,7 @@ main:
 
     mov di, buffer 
     call read
-    mov si, color_sys
-
-    xor ax, ax
-    mov al, byte [buffer + 1]
-    sub al, '0'
-    mov byte [si], al
-
-    xor ax, ax
-    xor cx, cx
-    mov al, byte [buffer]
-    sub al, '0'
-    mov cl, 16
-    mul cx
-    add byte [si], al
+    call setcolorstr
 
     jmp main
 
@@ -250,6 +237,7 @@ main:
     jmp main
 
 
+;args: si, di
 strcmp:
 .loop:
     mov al, [si]
@@ -273,6 +261,7 @@ strcmp:
     ret
 
 
+;args: noone
 setcolor:
     mov ah, 09h
     mov cx, 1000h
@@ -283,10 +272,41 @@ setcolor:
     ret
 
 
+;args: di
+setcolorstr:
+    mov si, color_sys
+
+    mov al, byte [buffer + 1]
+    cmp al, 0
+    je .end
+    mov al, byte [buffer]
+    cmp al, 0
+    je .end
+
+    xor ax, ax
+    mov al, byte [buffer + 1]
+    cmp al, 0
+    sub al, '0'
+    mov byte [si], al
+
+    xor ax, ax
+    xor cx, cx
+    mov al, byte [buffer]
+    cmp al, 0
+    sub al, '0'
+    mov cl, 16
+    mul cx
+    add byte [si], al
+.end:
+    ret
+
+
+;args: noone
 setallcolor:
     ret
 
 
+;args: noone
 clear:
     mov al, 03h
     mov ah, 0
@@ -294,6 +314,7 @@ clear:
     ret
 
 
+;args: di
 read:
     xor cl, cl
 
@@ -350,6 +371,7 @@ read:
     ret
 
 
+;args: si
 write:
     lodsb
 
@@ -364,6 +386,7 @@ write:
     ret
 
 
+;args: si
 writeln:
     call write
     
@@ -375,6 +398,7 @@ writeln:
     ret
 
 
+;args: noone
 restart:
     mov byte [color_sys], 07h
     mov si, buffer
@@ -398,6 +422,7 @@ restart:
     ret
 
 
+;args: noone
 shutdown:
     mov ax, 0x1000
     mov ax, ss
