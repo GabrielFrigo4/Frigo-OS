@@ -291,8 +291,9 @@ shutdown:
 ; ------------------------------------------------------------------
 ; FEATURES -- Code to pull into the kernel
 
-     %INCLUDE "src/Date.asm"
-     %INCLUDE "src/Cli.asm"
+    %INCLUDE "src/Math.asm"
+    %INCLUDE "src/Date.asm"
+    %INCLUDE "src/Cli.asm"
 
 ; ==================================================================
 ; END OF KERNEL

@@ -1,5 +1,5 @@
     section .data
-timezone:       db -3
+timezone:       db -3h
 fmt_12_24:      db 0
 fmt_date:       db 1, '/'
 
@@ -199,7 +199,7 @@ get_date_string:
     pop bx
     ret
 
-.months: db 'Jan.Feb.Mar.Apr.May JuneJulyAug.SeptOct.Nov.Dec.'
+    .months: db 'Jan.Feb.Mar.Apr.May JuneJulyAug.SeptOct.Nov.Dec.'
 
 
 ;args: noone
@@ -219,18 +219,17 @@ get_time_string:
     int 1Ah
 
 .read:
-    ;mov ch, 10
-    mov al, ch            ; Convert hours to integer for AM/PM test
-    call bcd_to_int
-    mov dx, ax            ; Save
+    mov al, ch
+    ;call hex2dec
+    ;add al, byte [timezone]     ; add timezone
+    ;call dec2hex
+    ;mov al, 22h
+    call bcd_to_int             ; Convert hours to integer for AM/PM test
+    mov dx, ax                  ; Save
 
-    ;mov dl, 11
-    ;add dl, byte [timezone]
-    ;add ch, byte [timezone]
-
-    mov al,    ch            ; Hour
-    shr al, 4            ; Tens digit - move higher BCD number into lower bits
-    and ch, 0Fh            ; Ones digit
+    mov al, ch                  ; Hour
+    shr al, 4                   ; Tens digit - move higher BCD number into lower bits
+    and ch, 0Fh                 ; Ones digit
     test byte [fmt_12_24], 0FFh
     jz .twelve_hr
 
@@ -238,7 +237,6 @@ get_time_string:
     mov al, ch
     call .add_digit
     jmp short .minutes
-
 .twelve_hr:
     cmp dx, 0            ; If 00mm, make 12 AM
     je .midnight
@@ -308,6 +306,6 @@ get_time_string:
     add al, '0'            ; Convert to ASCII
     stosb                ; Put into string buffer
     ret
-    .hours_string    db 'hours', 0
-    .am_string     db 'AM', 0
-    .pm_string     db 'PM', 0
+    .hours_string:   db 'hours', 0
+    .am_string:    db 'AM', 0
+    .pm_string:    db 'PM', 0
