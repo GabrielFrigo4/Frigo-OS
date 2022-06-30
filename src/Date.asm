@@ -220,10 +220,9 @@ get_time_string:
 
 .read:
     mov al, ch
-    ;call hex2dec
-    ;add al, byte [timezone]     ; add timezone
-    ;call dec2hex
-    ;mov al, 22h
+    call hex2dec
+    add al, byte [timezone]     ; add timezone
+    call dec2hex
     call bcd_to_int             ; Convert hours to integer for AM/PM test
     mov dx, ax                  ; Save
 

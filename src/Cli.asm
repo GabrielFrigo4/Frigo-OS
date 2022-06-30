@@ -24,18 +24,33 @@ setcolorstr:
 
     xor ax, ax
     mov al, byte [buffer + 1]
-    cmp al, 0
+    cmp al, 'A'
+    jge .letter1
     sub al, '0'
     mov byte [si], al
+    jmp .endLetter1
+.letter1:
+    sub al, 'A' - 10
+    mov byte [si], al
+.endLetter1:
 
     xor ax, ax
     xor cx, cx
     mov al, byte [buffer]
-    cmp al, 0
+    cmp al, 'A'
+    jge .letter2
     sub al, '0'
     mov cl, 16
     mul cx
     add byte [si], al
+    jmp .endLetter2
+.letter2:
+    sub al, 'A' - 10
+    mov cl, 16
+    mul cx
+    add byte [si], al
+.endLetter2:
+
 .end:
     ret
 
