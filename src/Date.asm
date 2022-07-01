@@ -223,6 +223,7 @@ get_time_string:
     call hex2dec
     add al, byte [timezone]     ; add timezone
     call dec2hex
+    mov ch, al
     call bcd_to_int             ; Convert hours to integer for AM/PM test
     mov dx, ax                  ; Save
 
