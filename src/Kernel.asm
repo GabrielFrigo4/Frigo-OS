@@ -6,7 +6,7 @@ buffer:         times 64 db 0
 color_sys:      db 07h
 cmd:            db ":>", 0
 erro_comand:    db "Command not found: ", 0
-os_data:        db "FrigoOS v0.3.1", 0
+os_data:        db "FrigoOS v0.3.2", 0
 get_clear:      db "clear", 0
 get_os_data:    db "dataos", 0
 get_color:     db "color", 0

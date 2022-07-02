@@ -1,4 +1,4 @@
-section .text
+	section .text
 ;args: al
 ;ret: al
 dec2hex:
@@ -67,13 +67,26 @@ base1_to_base2:
 	.val: db 0
 
 
-;args: al
-;ret: al
-abs:
+	section .text
+;args: ax
+;ret: ax
+absx:
+	cmp ax, 0
+	jge .isAbs
+    xor ax, 0xFFFF
+    sub ax, 0xFFFF
+	
+.isAbs:
 	ret
 
-
+	section .text
 ;args: al
 ;ret: al
-switchsign:
+absl:
+	cmp al, 0
+	jge .isAbs
+    xor al, 0xFF
+    sub al, 0xFF
+	
+.isAbs:
 	ret

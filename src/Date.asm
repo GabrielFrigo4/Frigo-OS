@@ -1,5 +1,5 @@
     section .data
-timezone:       db 3h
+timezone:       db -3h
 fmt_12_24:      db 0
 fmt_date:       db 1, '/'
 
@@ -158,10 +158,12 @@ get_date_string:
     jz .only_one
     call .add_2digits
     jmp short .two_done
+    
 .only_one:
     mov al, ah
     and al, 0Fh
     call .add_digit
+
 .two_done:
     ret
 
@@ -194,6 +196,7 @@ get_date_string:
     cmp byte [di-1], ' '        ; May?
     jne .done_month            ; Yes, eliminate extra space
     dec di
+
 .done_month:
     pop cx
     pop bx
@@ -219,16 +222,26 @@ get_time_string:
     int 1Ah
 
 .read:
+    mov ch, 20h
     mov al, ch
     call hex2dec
-    cmp byte [timezone], 0
-    jl .addtimezone
+
+    push bx
+    xor bx, bx
+    mov bl, byte [timezone]
+    cmp bl, 0
+    jg .addtimezone
+    xor bl, 0xFF    ;set sign pt1 of bl
+    sub bl, 0xFF    ;set sign pt2 of bl
+
 .addtimezone:
-    cmp al, byte [timezone]
-    jg .timezonegrater
+    cmp al, bl
+    pop bx
+    jge .timezonegrater
     add al, 24
+
 .timezonegrater:
-    sub al, byte [timezone]     ; add timezone
+    add al, byte [timezone]     ; add timezone
     call dec2hex
     mov ch, al
     call bcd_to_int             ; Convert hours to integer for AM/PM test
@@ -244,6 +257,7 @@ get_time_string:
     mov al, ch
     call .add_digit
     jmp short .minutes
+
 .twelve_hr:
     cmp dx, 0            ; If 00mm, make 12 AM
     je .midnight
@@ -271,6 +285,7 @@ get_time_string:
 
 .twelve_st2:
     call .add_digit            ; Modified BCD, 2-digit hour
+
 .twelve_st1:
     mov al, ch
     call .add_digit
