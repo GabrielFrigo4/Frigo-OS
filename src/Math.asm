@@ -65,3 +65,15 @@ base1_to_base2:
 	.rst: db 0
 	.quo: db 0
 	.val: db 0
+
+
+;args: al
+;ret: al
+abs:
+	ret
+
+
+;args: al
+;ret: al
+switchsign:
+	ret
