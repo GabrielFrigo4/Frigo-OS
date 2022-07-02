@@ -1,5 +1,5 @@
     section .data
-timezone:       db -3h
+timezone:       db 3h
 fmt_12_24:      db 0
 fmt_date:       db 1, '/'
 
@@ -221,7 +221,14 @@ get_time_string:
 .read:
     mov al, ch
     call hex2dec
-    add al, byte [timezone]     ; add timezone
+    cmp byte [timezone], 0
+    jl .addtimezone
+.addtimezone:
+    cmp al, byte [timezone]
+    jg .timezonegrater
+    add al, 24
+.timezonegrater:
+    sub al, byte [timezone]     ; add timezone
     call dec2hex
     mov ch, al
     call bcd_to_int             ; Convert hours to integer for AM/PM test
