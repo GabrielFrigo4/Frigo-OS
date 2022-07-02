@@ -222,7 +222,7 @@ get_time_string:
     int 1Ah
 
 .read:
-    mov ch, 20h
+    mov ch, 2h
     mov al, ch
     call hex2dec
 
@@ -232,7 +232,7 @@ get_time_string:
     cmp bl, 0
     jg .addtimezone
     xor bl, 0xFF    ;set sign pt1 of bl
-    sub bl, 0xFF    ;set sign pt2 of bl
+    inc bl          ;set sign pt2 of bl
 
 .addtimezone:
     cmp al, bl

@@ -74,7 +74,7 @@ absx:
 	cmp ax, 0
 	jge .isAbs
     xor ax, 0xFFFF
-    sub ax, 0xFFFF
+    inc ax
 	
 .isAbs:
 	ret
@@ -86,7 +86,7 @@ absl:
 	cmp al, 0
 	jge .isAbs
     xor al, 0xFF
-    sub al, 0xFF
+    inc al
 	
 .isAbs:
 	ret
