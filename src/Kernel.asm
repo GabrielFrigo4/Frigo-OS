@@ -6,10 +6,10 @@ buffer:         times 64 db 0
 color_sys:      db 07h
 cmd:            db ":> ", 0
 erro_comand:    db "Command not found: ", 0
-os_data:        db "FrigoOS v0.3.2", 0
-get_clear:      db "clear", 0
 get_os_data:    db "dataos", 0
-get_color:     db "color", 0
+str_os_data:	db "FrigoOS v0.3.2", 0
+get_clear:      db "clear", 0
+get_color:		db "color", 0
 color_arg:      db "color value: ", 0
 get_color1:     db "color1", 0
 get_color2:     db "color2", 0
@@ -22,8 +22,10 @@ get_color8:     db "color8", 0
 get_color9:     db "color9", 0
 get_exit:       db "exit", 0
 get_restart:    db "restart", 0
-get_date:        db "date", 0
-get_time:        db "time", 0
+get_date:		db "date", 0
+get_time:		db "time", 0
+get_help:		db "help", 0
+str_help:		db "data: ", 10, "dada:", 0
 
 
     section .text
@@ -37,7 +39,7 @@ mov sp, ss
 call clear
 
 call setcolor
-mov si, os_data ;write FrigoOS data
+mov si, str_os_data ;write FrigoOS data
 call writeln
 
 main:
@@ -132,6 +134,11 @@ main:
     mov di, get_time
     call strcmp
     je .time
+	
+	mov si, buffer
+    mov di, get_help
+    call strcmp
+    je .help
 
     mov si, erro_comand
     call write
@@ -145,7 +152,7 @@ main:
     jmp main
 
 .os_data:
-    mov si, os_data
+    mov si, str_os_data
     call writeln
     jmp main
 
@@ -220,6 +227,11 @@ main:
 .time:
     call get_time_string 
     mov si, bx 
+    call writeln
+    jmp main
+	
+.help:
+    mov si, str_help 
     call writeln
     jmp main
 
