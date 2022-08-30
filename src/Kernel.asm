@@ -4,7 +4,7 @@ BITS 16
     section .data
 buffer:         times 64 db 0
 color_sys:      db 07h
-cmd:            db ":>", 0
+cmd:            db ":> ", 0
 erro_comand:    db "Command not found: ", 0
 os_data:        db "FrigoOS v0.3.2", 0
 get_clear:      db "clear", 0
