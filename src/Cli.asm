@@ -72,20 +72,64 @@ clear:
 
 ;args: noone
 ;ret: al
-cread_hide:
+readc_hide:
 	mov ah, 0
     int 0x16
 	ret
 	
 ;args: noone
 ;ret: al
-cread:
-	push bx
-	call cread_hide
+readc:
+	call readc_hide
+    pusha
 	mov bl, al
-	call cwrite
-	pop bx
+	call writec
+	popa
 	ret
+
+
+;args: di(ref)
+;ret: noone
+read_hide:
+    xor cl, cl
+
+.loop:
+    call readc_hide
+
+    cmp al, 0x08
+    je .backspace
+
+    cmp al, 0x0D
+    je .done
+
+    cmp cl, 0x3F
+    je .loop
+
+    stosb
+    inc cl
+    jmp .loop
+
+.backspace:
+    cmp cl, 0
+    je .loop
+
+    dec di
+    mov byte[di], 0
+    dec cl
+
+    mov ah, 0x0E
+    mov al, 0x08
+
+    jmp .loop
+
+.done:
+    mov al, 0
+    stosb
+	mov bl, 0x0D
+	call writec
+	mov bl, 0x0A
+	call writec
+    ret
 
 
 ;args: di(ref)
@@ -94,7 +138,7 @@ read:
     xor cl, cl
 
 .loop:
-    call cread_hide
+    call readc_hide
 
     cmp al, 0x08
     je .backspace
@@ -106,7 +150,7 @@ read:
     je .loop
 
 	mov bl, al
-	call cwrite
+	call writec
 
     stosb
     inc cl
@@ -116,8 +160,9 @@ read:
     cmp cl, 0
     je .loop
 
-    mov ah, 0x0E ;show remove char
-    int 0x10
+    mov bl, al
+	call writec ;show remove char
+
 
     dec di
     mov byte[di], 0
@@ -127,10 +172,10 @@ read:
     mov al, 0x08
 
 	mov bl, ''
-	call cwrite
+	call writec
 
 	mov bl, 0x08
-	call cwrite
+	call writec
 
     jmp .loop
 
@@ -138,54 +183,58 @@ read:
     mov al, 0
     stosb
 	mov bl, 0x0D
-	call cwrite
+	call writec
 	mov bl, 0x0A
-	call cwrite
+	call writec
     ret
 
 
 ;args: bl
 ;ret: noone
-cwrite:
-	push ax
+writec:
+    pusha
 	mov ah, 0x0E
 	mov al, bl
 	int 0x10
-	pop ax
+    popa
 	ret
 
 
 ;args: si
 ;ret: noone
 write:
+    pusha
 .loop:
 	mov bl, [si]
 	cmp bl, 0
 	je .end
-	call cwrite
+	call writec
 	cmp bl, 10
 	je .newl
 	jmp .thisl
 	
 .newl:
 	mov bl, 0x0D
-	call cwrite
+	call writec
 
 .thisl:
 	inc si
 	jmp .loop
 	
 .end:
+    popa
 	ret
 
 
 ;args: si
 ;ret: noone
 writeln:
+    pusha
     call write
     
     mov bl, 0x0D
-    call cwrite
+    call writec
     mov bl, 0x0A
-	call cwrite
+	call writec
+    popa
     ret
