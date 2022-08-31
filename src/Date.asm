@@ -1,5 +1,5 @@
     section .data
-timezone:       db -6
+timezone:       db -3
 fmt_12_24:      db 0
 fmt_date:       db 1, '/'
 

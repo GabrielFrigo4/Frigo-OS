@@ -24,8 +24,17 @@ get_exit:       db "exit", 0
 get_restart:    db "restart", 0
 get_date:		db "date", 0
 get_time:		db "time", 0
+
+;help
 get_help:		db "help", 0
-str_help:		db "data: ", 10, "dada:", 0
+str_help:		
+	db "dataos: get a version of this OS", 10 
+	db "clear: clear this terminal", 10
+	db "color: set color of this terminal", 10
+	db "exit: exit this terminal", 10
+	db "restart: restart this terminal", 10
+	db "date: get current date", 10
+	db "time: get current time", 0
 
 
     section .text

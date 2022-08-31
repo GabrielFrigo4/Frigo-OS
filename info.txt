@@ -1,1 +1,11 @@
 max_size: is 64 kib (65536 bytes)
+
+(stack)
+args: push
+ret: pop
+
+corrigir:
+args
+rets
+time
+date

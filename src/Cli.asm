@@ -131,25 +131,33 @@ read:
 ;args: si
 ;ret: noone
 write:
-    lodsb
-
-    or al, al
-    jz .done
-
-    mov ah, 0x0E
+	mov ah, 0x0E
+	
+.loop:
+	mov al, [si]
+	cmp al, 0
+	je .end
+	int 0x10
+	cmp al, 10
+	je .newl
+	jmp .thisl
+	
+.newl:
+	mov al, 0x0D
     int 0x10
-    jmp write
 
-.done:
-    ret
-
+.thisl:
+	inc si
+	jmp .loop
+	
+.end:
+	ret
 
 ;args: si
 ;ret: noone
 writeln:
     call write
     
-    mov ah, 0x0E
     mov al, 0x0D
     int 0x10
     mov al, 0x0A
