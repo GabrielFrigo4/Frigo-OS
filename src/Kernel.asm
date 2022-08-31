@@ -7,7 +7,7 @@ color_sys:      db 07h
 cmd:            db ":> ", 0
 erro_comand:    db "Command not found: ", 0
 get_os_data:    db "dataos", 0
-str_os_data:	db "FrigoOS v0.3.2", 0
+str_os_data:	db "FrigoOS v0.3.3", 0
 get_clear:      db "clear", 0
 get_color:		db "color", 0
 color_arg:      db "color value: ", 0
@@ -47,19 +47,19 @@ mov sp, ss
 
 call clear
 
-call setcolor
+call set_color
 mov si, str_os_data ;write FrigoOS data
 call writeln
 
 main:
-    call setcolor
+    call set_color
     mov si, cmd
     call write
 
     mov di, buffer 
     call read
 
-    call setcolor
+    call set_color
     mov si, buffer
     cmp byte [si], 0
     je main
@@ -157,7 +157,7 @@ main:
 
 .clear:
     call clear
-    call setcolor
+    call set_color
     jmp main
 
 .os_data:
@@ -171,7 +171,7 @@ main:
 
     mov di, buffer 
     call read
-    call setcolorstr
+    call set_color_str
     jmp main
 
 .color1:

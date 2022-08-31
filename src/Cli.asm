@@ -1,7 +1,7 @@
     section .text
 ;args: noone
 ;ret: noone
-setcolor:
+set_color:
     mov ah, 09h
     mov cx, 1000h
     mov al, 20h
@@ -12,7 +12,7 @@ setcolor:
 
 ;args: di
 ;ret: noone
-setcolorstr:
+set_color_str:
     mov si, color_sys
 
     mov al, byte [buffer + 1]
@@ -57,7 +57,7 @@ setcolorstr:
 
 ;args: noone
 ;ret: noone
-setallcolor:
+set_all_color:
     ret
 
 
@@ -72,9 +72,19 @@ clear:
 
 ;args: noone
 ;ret: al
-cread:
+cread_hide:
 	mov ah, 0
     int 0x16
+	ret
+	
+;args: noone
+;ret: al
+cread:
+	push bx
+	call cread_hide
+	mov bl, al
+	call cwrite
+	pop bx
 	ret
 
 
@@ -84,8 +94,7 @@ read:
     xor cl, cl
 
 .loop:
-    mov ah, 0
-    int 0x16
+    call cread_hide
 
     cmp al, 0x08
     je .backspace
@@ -96,8 +105,8 @@ read:
     cmp cl, 0x3F
     je .loop
 
-    mov ah, 0x0E ;show add char
-    int 0x10
+	mov bl, al
+	call cwrite
 
     stosb
     inc cl
@@ -117,51 +126,50 @@ read:
     mov ah, 0x0E
     mov al, 0x08
 
-    mov al, ''
-    int 10h
+	mov bl, ''
+	call cwrite
 
-    mov al, 0x08
-    int 10h
+	mov bl, 0x08
+	call cwrite
 
     jmp .loop
 
 .done:
     mov al, 0
     stosb
-    mov ah, 0x0E
-    mov al, 0x0D
-    int 0x10
-    mov al, 0x0A
-    int 0x10
+	mov bl, 0x0D
+	call cwrite
+	mov bl, 0x0A
+	call cwrite
     ret
 
 
 ;args: bl
 ;ret: noone
 cwrite:
+	push ax
 	mov ah, 0x0E
 	mov al, bl
 	int 0x10
+	pop ax
 	ret
 
 
 ;args: si
 ;ret: noone
 write:
-	mov ah, 0x0E
-	
 .loop:
-	mov al, [si]
-	cmp al, 0
+	mov bl, [si]
+	cmp bl, 0
 	je .end
-	int 0x10
-	cmp al, 10
+	call cwrite
+	cmp bl, 10
 	je .newl
 	jmp .thisl
 	
 .newl:
-	mov al, 0x0D
-    int 0x10
+	mov bl, 0x0D
+	call cwrite
 
 .thisl:
 	inc si
@@ -176,8 +184,8 @@ write:
 writeln:
     call write
     
-    mov al, 0x0D
-    int 0x10
-    mov al, 0x0A
-    int 0x10
+    mov bl, 0x0D
+    call cwrite
+    mov bl, 0x0A
+	call cwrite
     ret
