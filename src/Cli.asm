@@ -70,6 +70,14 @@ clear:
     ret
 
 
+;args: noone
+;ret: al
+cread:
+	mov ah, 0
+    int 0x16
+	ret
+
+
 ;args: di(ref)
 ;ret: noone
 read:
@@ -128,6 +136,15 @@ read:
     ret
 
 
+;args: bl
+;ret: noone
+cwrite:
+	mov ah, 0x0E
+	mov al, bl
+	int 0x10
+	ret
+
+
 ;args: si
 ;ret: noone
 write:
@@ -152,6 +169,7 @@ write:
 	
 .end:
 	ret
+
 
 ;args: si
 ;ret: noone
