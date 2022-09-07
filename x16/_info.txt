@@ -1,4 +1,4 @@
-max_size: is 64 kib (65536 bytes)
+max_size: is 64 kib (65.536 bytes)
 
 (stack)
 args: push

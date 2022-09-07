@@ -1,0 +1,1 @@
+max_size: is 4 GB (4.294.967.296 bytes)
