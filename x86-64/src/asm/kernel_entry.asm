@@ -1,5 +1,5 @@
 section .text
-    [bits 32]
+    [bits 64]
 	[extern init_kernel]
     call init_kernel
     [extern main]

@@ -7,7 +7,7 @@ fi
 
 if [ ! -e BinOS/FrigoOS.flp ]
 then
-	mkdosfs -C BinOS/FrigoOS.flp 1440 || exit
+	sudo mkdosfs -C BinOS/FrigoOS.flp 1440 || exit
 fi
 
 nasm -O0 -w+orphan-labels -f bin -o  BinOS/bootloader.bin src/Bootloader.asm || exit

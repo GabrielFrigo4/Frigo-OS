@@ -1,4 +1,4 @@
-export PATH="$PATH:/usr/local/i386elfgcc/bin"
+export PATH="$PATH:/usr/local/x86_64elfgcc/bin"
 
 if [ ! -e BinOS ]
 then
