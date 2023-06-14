@@ -32,4 +32,4 @@ rm -rf tmp-loop
 rm -f FrigoOS.iso
 mkisofs -quiet -V 'FRIGOOS' -input-charset iso8859-1 -o FrigoOS.iso -b FrigoOS.flp ./ || exit
 
-echo 'Done!'
+echo 'FrigoOS Build!'
