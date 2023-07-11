@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # nasm and qemu
 sudo apt install nasm
 sudo apt install qemu
