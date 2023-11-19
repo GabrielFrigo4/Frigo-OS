@@ -23,4 +23,4 @@ build: $(x86_64_object_files)
 	mkdir -p bin/elf && \
 	x86_64-elf-ld -n -o bin/elf/kernel.elf -T src/linker/kernel.ld $(x86_64_object_files) && \
 	cp bin/elf/kernel.elf iso/boot/kernel.elf && \
-	grub-mkrescue /usr/lib/grub/i386-pc -o bin/kernel.iso iso
+	grub-mkrescue -o bin/kernel.iso iso
