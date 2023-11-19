@@ -4,15 +4,7 @@
 
 global start
 extern long_mode_start
-
-
-; ################################
-; #	SECTION .DATA
-; ################################
-
-section .data
-VIDEO_MEMORY:		equ	0xB8000		; Video memory pointer
-STACK_MEMORY_SIZE:	equ	0x4000		; 4096 * 4
+%include "src/boot/main.inc"
 
 
 ; ################################
@@ -136,10 +128,10 @@ enable_paging:
 ; label error
 error:
 	; print "ERR: X" where X is the erro code
-	mov dword [VIDEO_MEMORY], 0x4F524F45
-	mov dword [VIDEO_MEMORY + 4], 0x4F3A4F52
-	mov dword [VIDEO_MEMORY + 8], 0x4F204F20
-	mov byte  [VIDEO_MEMORY + 12], al
+	mov dword [VIDEO_MEMORY_POINTER], 0x4F524F45
+	mov dword [VIDEO_MEMORY_POINTER + 0x4], 0x4F3A4F52
+	mov dword [VIDEO_MEMORY_POINTER + 0x8], 0x4F204F20
+	mov byte  [VIDEO_MEMORY_POINTER + 0xA], al
 	hlt
 
 

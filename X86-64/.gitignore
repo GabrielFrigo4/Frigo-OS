@@ -1,1 +1,2 @@
-bin
+/bin/
+/iso/boot/kernel.elf
