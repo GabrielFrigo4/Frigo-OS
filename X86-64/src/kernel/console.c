@@ -86,7 +86,7 @@ void Console_Write_String(char *str)
 	}
 }
 
-void Console_Set_Colors(uint8_t foreground, uint8_t background)
+void Console_Set_Color(uint8_t foreground, uint8_t background)
 {
 	color = foreground + (background << 4);
 }
