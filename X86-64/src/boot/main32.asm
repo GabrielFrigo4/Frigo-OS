@@ -2,6 +2,9 @@
 ; #	GLOBAL / EXTERN
 ; ################################
 
+global STACK_BOTOM
+global STACK_TOP
+
 global start
 extern long_mode_start
 %include "src/boot/main.inc"
@@ -16,7 +19,7 @@ bits 32
 
 ; function start()
 start:
-	mov esp, stack_top
+	mov esp, STACK_TOP
 
 	call check_multiboot
 	call check_cpuid
@@ -147,9 +150,9 @@ page_table_l3:
 	resb 4096
 page_table_l2:
 	resb 4096
-stack_botom:
-	resb STACK_MEMORY_SIZE
-stack_top:
+STACK_BOTOM:
+	resq STACK_MEMORY_SIZE_QWORD
+STACK_TOP:
 
 
 ; ################################

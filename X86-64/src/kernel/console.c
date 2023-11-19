@@ -134,10 +134,17 @@ void Console_Write_QWord(uint64_t qword)
 
 void Console_Write_Char(char character)
 {
-	if (character == '\n')
+	switch (character)
 	{
+	case '\n':
 		Console_NewLine();
 		return;
+	case '\0':
+		return;
+		break;
+
+	default:
+		break;
 	}
 
 	if (col > NUM_COLS)
@@ -165,6 +172,70 @@ void Console_Write_Buffer(void *buffer, uint64_t offset, uint64_t lenght)
 	{
 		Console_Write_Char((char)bytes[i]);
 	}
+}
+
+void Console_Write_Uint8(uint8_t uint8)
+{
+	char uint8Str[4] = {'\0'};
+	size_t uint8Index = 4;
+	while (uint8 >= 1)
+	{
+		char digit = uint8 % 10;
+		uint8 -= digit;
+		uint8 /= 10;
+
+		uint8Index--;
+		uint8Str[uint8Index] = digit + '0';
+	}
+	Console_Write_Buffer(uint8Str, uint8Index, 4 - uint8Index);
+}
+
+void Console_Write_Uint16(uint16_t uint16)
+{
+	char uint16Str[8] = {'\0'};
+	size_t uint16Index = 8;
+	while (uint16 >= 1)
+	{
+		char digit = uint16 % 10;
+		uint16 -= digit;
+		uint16 /= 10;
+
+		uint16Index--;
+		uint16Str[uint16Index] = digit + '0';
+	}
+	Console_Write_Buffer(uint16Str, uint16Index, 256 - uint16Index);
+}
+
+void Console_Write_Uint32(uint32_t uint32)
+{
+	char uint32Str[16] = {'\0'};
+	size_t uint32Index = 16;
+	while (uint32 >= 1)
+	{
+		char digit = uint32 % 10;
+		uint32 -= digit;
+		uint32 /= 10;
+
+		uint32Index--;
+		uint32Str[uint32Index] = digit + '0';
+	}
+	Console_Write_Buffer(uint32Str, uint32Index, 16 - uint32Index);
+}
+
+void Console_Write_Uint64(uint64_t uint64)
+{
+	char uint64Str[32] = {'\0'};
+	size_t uint64Index = 32;
+	while (uint64 >= 1)
+	{
+		char digit = uint64 % 10;
+		uint64 -= digit;
+		uint64 /= 10;
+
+		uint64Index--;
+		uint64Str[uint64Index] = digit + '0';
+	}
+	Console_Write_Buffer(uint64Str, uint64Index, 32 - uint64Index);
 }
 
 void Console_Set_Color(uint8_t foreground, uint8_t background)

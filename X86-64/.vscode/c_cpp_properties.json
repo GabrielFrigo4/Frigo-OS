@@ -17,7 +17,12 @@
             "cppStandard": "c++17",
             "intelliSenseMode": "linux-gcc-x64",
             "configurationProvider": "ms-vscode.makefile-tools"
-        }
+        },
+        {
+            "key": "tab",
+            "command": "-acceptSelectedSuggestion",
+            "when": "suggestWidgetVisible && textInputFocus"
+        },
     ],
     "version": 4
 }
