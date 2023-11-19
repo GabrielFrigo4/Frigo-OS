@@ -1,1 +1,5 @@
-BinOS/
+bin/
+*.bin
+*.elf
+*.elf32
+*.elf64
