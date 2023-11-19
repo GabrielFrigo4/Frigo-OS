@@ -1,2 +1,2 @@
-@wsl make
+@wsl make build
 @pause
