@@ -25,6 +25,11 @@ enum
 
 void Console_Clear();
 void Console_NewLine();
+void Console_Write_Byte(uint8_t byte);
+void Console_Write_Word(uint16_t word);
+void Console_Write_DWord(uint32_t dword);
+void Console_Write_QWord(uint64_t qword);
 void Console_Write_Char(char character);
 void Console_Write_String(char *string);
+void Console_Write_Buffer(void *buffer, uint64_t offset, uint64_t lenght);
 void Console_Set_Color(uint8_t foreground, uint8_t background);
