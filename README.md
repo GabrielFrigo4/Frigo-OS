@@ -3,7 +3,7 @@ It's my **OPERATING SYSTEM** (For X86-64 only)
 
 *Detail: I always try to keep eerything in the latest version :)*
 
-**This Project Use (for Kernel):**
+**This Project Use (for Kernel and other Executable Binaries):**
  - GRUB | Version: 2.06
  - GNU Compile Tools | Version: 12.2.0
  - BINUTILS | Version: 2.41
