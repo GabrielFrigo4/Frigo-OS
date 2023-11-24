@@ -1,34 +1,34 @@
 ################################
 #	ASM FILES
 ################################
-x86_64_asm_source_files := $(shell find src -name *.asm)
-x86_64_asm_object_files := $(patsubst src/%.asm, bin/obj/%.o, $(x86_64_asm_source_files))
+x86_64_kernel_asm_source_files := $(shell find src/kernel -name *.asm)
+x86_64_kernel_asm_object_files := $(patsubst src/kernel/%.asm, bin/obj/%.o, $(x86_64_kernel_asm_source_files))
 
 ################################
 #	C FILES
 ################################
-x86_64_c_source_files := $(shell find src -name *.c)
-x86_64_c_object_files := $(patsubst src/%.c, bin/obj/%.o, $(x86_64_c_source_files))
+x86_64_kernel_c_source_files := $(shell find src/kernel -name *.c)
+x86_64_kernel_c_object_files := $(patsubst src/kernel/%.c, bin/obj/%.o, $(x86_64_kernel_c_source_files))
 
 ################################
 #	OBJECT FILES
 ################################
-x86_64_object_files := $(x86_64_c_object_files) $(x86_64_asm_object_files)
+x86_64_kernel_object_files := $(x86_64_kernel_c_object_files) $(x86_64_kernel_asm_object_files)
 
-$(x86_64_asm_object_files): bin/obj/%.o : src/%.asm
+$(x86_64_kernel_asm_object_files): bin/obj/%.o : src/kernel/%.asm
 	mkdir -p $(dir $@) && \
-	nasm -f elf64 $(patsubst bin/obj/%.o, src/%.asm, $@) -o $@
+	nasm -f elf64 $(patsubst bin/obj/%.o, src/kernel/%.asm, $@) -o $@
 
-$(x86_64_c_object_files): bin/obj/%.o : src/%.c
+$(x86_64_kernel_c_object_files): bin/obj/%.o : src/kernel/%.c
 	mkdir -p $(dir $@) && \
-	x86_64-elf-gcc -c -I src/interface -ffreestanding -Wno-multichar $(patsubst bin/obj/%.o, src/%.c, $@) -o $@
+	x86_64-elf-gcc -c -I src/kernel/interface -ffreestanding -Wno-multichar $(patsubst bin/obj/%.o, src/kernel/%.c, $@) -o $@
 
 .PHONY: build
-build: $(x86_64_object_files)
+build: $(x86_64_kernel_object_files)
 	mkdir -p bin/obj && \
 	mkdir -p bin/elf && \
 	mkdir -p bin/iso/boot/grub && \
-	x86_64-elf-ld -n -o bin/elf/kernel.elf -T src/linker/kernel.ld $(x86_64_object_files) && \
+	x86_64-elf-ld -n -o bin/elf/kernel.elf -T src/linker/kernel.ld $(x86_64_kernel_object_files) && \
 	cp bin/elf/kernel.elf bin/iso/boot/kernel.elf && \
-	cp src/boot/grub.cfg bin/iso/boot/grub/grub.cfg && \
+	cp src/kernel/boot/grub.cfg bin/iso/boot/grub/grub.cfg && \
 	grub-mkrescue -o bin/kernel.iso bin/iso

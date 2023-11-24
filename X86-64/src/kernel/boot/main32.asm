@@ -7,7 +7,7 @@ global STACK_TOP
 
 global start
 extern long_mode_start
-%include "src/boot/main.inc"
+%include "src/kernel/boot/main.inc"
 
 
 ; ################################
