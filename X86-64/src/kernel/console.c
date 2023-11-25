@@ -176,6 +176,11 @@ void Console_Write_Buffer(void *buffer, uint64_t offset, uint64_t lenght)
 
 void Console_Write_Uint8(uint8_t uint8)
 {
+	if (uint8 == 0)
+	{
+		Console_Write_Char('0');
+	}
+
 	char uint8Str[4] = {'\0'};
 	size_t uint8Index = 4;
 	while (uint8 >= 1)
@@ -192,6 +197,11 @@ void Console_Write_Uint8(uint8_t uint8)
 
 void Console_Write_Uint16(uint16_t uint16)
 {
+	if (uint16 == 0)
+	{
+		Console_Write_Char('0');
+	}
+
 	char uint16Str[8] = {'\0'};
 	size_t uint16Index = 8;
 	while (uint16 >= 1)
@@ -208,6 +218,11 @@ void Console_Write_Uint16(uint16_t uint16)
 
 void Console_Write_Uint32(uint32_t uint32)
 {
+	if (uint32 == 0)
+	{
+		Console_Write_Char('0');
+	}
+
 	char uint32Str[16] = {'\0'};
 	size_t uint32Index = 16;
 	while (uint32 >= 1)
@@ -224,6 +239,11 @@ void Console_Write_Uint32(uint32_t uint32)
 
 void Console_Write_Uint64(uint64_t uint64)
 {
+	if (uint64 == 0)
+	{
+		Console_Write_Char('0');
+	}
+
 	char uint64Str[32] = {'\0'};
 	size_t uint64Index = 32;
 	while (uint64 >= 1)

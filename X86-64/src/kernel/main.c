@@ -1,11 +1,14 @@
 #include "console.h"
 #include "stack.h"
+#include "info.h"
 
 void kernel_main()
 {
 	Console_Clear();
 	Console_Set_Color(PRINT_COLOR_YELLOW, PRINT_COLOR_BLACK);
-	Console_Write_String("Welcome to our 64-bit kernel!\n");
+
+	Kernel_Print_Info();
+	Console_Write_String("\nOur 64-bit Kernel!\n");
 
 	Console_Write_String("Total Stack Memory: ");
 	Console_Write_Uint64(Kernel_StackMemory_Total());

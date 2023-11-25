@@ -4,7 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/src/interface"
+                "${workspaceFolder}/src/kernel/interface"
             ],
             "defines": [
                 "_DEBUG",
@@ -21,8 +21,12 @@
         {
             "key": "tab",
             "command": "-acceptSelectedSuggestion",
-            "when": "suggestWidgetVisible && textInputFocus"
-        },
+            "when": "suggestWidgetVisible && textInputFocus",
+            "includePath": [
+                "${default}",
+                "${workspaceFolder}/src/kernel/interface"
+            ]
+        }
     ],
     "version": 4
 }
