@@ -1,4 +1,4 @@
-# Frigo-OS
+# Frigo-OS X86-64
 It's **MY OWN OPERATING SYSTEM** (for X86-64 now and X86-S in the future)
 
 *Detail: I always try to keep eerything in the latest version :)*
