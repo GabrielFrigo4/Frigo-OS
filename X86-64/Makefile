@@ -31,4 +31,4 @@ build: $(x86_64_kernel_object_files)
 	x86_64-elf-ld -n -o bin/elf/kernel.elf -T src/linker/kernel.ld $(x86_64_kernel_object_files) && \
 	cp bin/elf/kernel.elf bin/iso/boot/kernel.elf && \
 	cp src/kernel/boot/grub.cfg bin/iso/boot/grub/grub.cfg && \
-	grub-mkrescue -o bin/kernel.iso bin/iso
+	grub-mkrescue -o bin/Frigo-OS.iso bin/iso
