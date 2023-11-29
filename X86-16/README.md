@@ -1,8 +1,6 @@
 # Frigo-OS (X86-16)
-It's **MY OWN OPERATING SYSTEM** (for X86-64 now and X86-S in the future)
+It's **MY OWN OPERATING SYSTEM** (X86-16 for VM)
 
-*.asm =>
-
-*.s =>
-
-*.inc =>
+ - *.asm => base assembly code
+ - *.s => include assembly code
+ - *.inc => include assembly header
