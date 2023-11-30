@@ -1,5 +1,5 @@
 ; ################################
-; # INCLUDE HEADER
+; # INCLUDE ASSEMBLY HEADER
 ; ################################
 
 %include "src/kernel/standard.inc"

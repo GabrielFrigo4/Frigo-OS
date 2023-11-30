@@ -1,5 +1,5 @@
 ; ################################
-; # INCLUDE HEADER
+; # INCLUDE ASSEMBLY HEADER
 ; ################################
 
 %include "src/kernel/standard.inc"
@@ -19,7 +19,7 @@ call ReadDisk
 jmp PROGRAM_SPACE
 
 ; ################################
-; # INCLUDE CODE
+; # INCLUDE ASSEMBLY CODE
 ; ################################
 
 %include "src/kernel/console.s"

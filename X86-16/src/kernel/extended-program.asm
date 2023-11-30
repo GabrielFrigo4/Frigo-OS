@@ -1,5 +1,5 @@
 ; ################################
-; # INCLUDE HEADER
+; # INCLUDE ASSEMBLY HEADER
 ; ################################
 
 %include "src/kernel/standard.inc"
@@ -16,7 +16,7 @@ call ConsoleWriteString
 jmp $
 
 ; ################################
-; # INCLUDE CODE
+; # INCLUDE ASSEMBLY CODE
 ; ################################
 
 %include "src/kernel/console.s"

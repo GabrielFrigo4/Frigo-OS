@@ -1,5 +1,5 @@
 ; ################################
-; # CONST LABEL
+; # CONST ASSEMBLY LABEL
 ; ################################
 
 BOOT_SPACE: equ 0x0000
